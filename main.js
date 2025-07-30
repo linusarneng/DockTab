@@ -13,42 +13,78 @@ if (bgUploadBtn && bgUploadInput && bgPreview) {
       Array.from(e.target.files).forEach(file => {
         const reader = new FileReader();
         reader.onload = function(ev) {
-          const img = document.createElement('img');
-          img.src = ev.target.result;
-          img.alt = 'Preview';
-          img.className = 'bg-preview-img';
-          bgPreview.appendChild(img);
-          // Add click event to set as background and mark as selected
-          img.addEventListener('click', function() {
-            // Remove .selected from all images
-            Array.from(bgPreview.querySelectorAll('.bg-preview-img')).forEach(el => el.classList.remove('selected'));
-            // Add .selected to clicked image
-            img.classList.add('selected');
-            // Fade animation
-            const fade = document.getElementById('bg-fade-overlay');
-            if (fade) {
-              fade.classList.add('active');
-              setTimeout(() => {
-                document.body.style.transition = 'background-image 0.5s cubic-bezier(.4,0,.2,1)';
-                document.body.style.backgroundImage = `url('${img.src}')`;
-                document.body.style.backgroundSize = 'cover';
-                document.body.style.backgroundPosition = 'center';
-                document.body.style.backgroundRepeat = 'no-repeat';
-                setTimeout(() => {
-                  document.body.style.transition = '';
-                  fade.classList.remove('active');
-                }, 500);
-              }, 10);
-            } else {
-              document.body.style.backgroundImage = `url('${img.src}')`;
-              document.body.style.backgroundSize = 'cover';
-              document.body.style.backgroundPosition = 'center';
-              document.body.style.backgroundRepeat = 'no-repeat';
-            }
-          });
+          const imgEl = new window.Image();
+          imgEl.onload = function() {
+            // Skala ner till 180x120px för preview, men spara originalet för bakgrund
+            const canvas = document.createElement('canvas');
+            canvas.width = 180;
+            canvas.height = 120;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, 180, 120);
+            // Beräkna rätt storlek och position för att behålla proportioner
+            let ratio = Math.min(180 / imgEl.width, 120 / imgEl.height);
+            let newW = imgEl.width * ratio;
+            let newH = imgEl.height * ratio;
+            let offsetX = (180 - newW) / 2;
+            let offsetY = (120 - newH) / 2;
+            ctx.drawImage(imgEl, offsetX, offsetY, newW, newH);
+            // Preview som PNG
+            const dataUrl = canvas.toDataURL('image/png');
+            const img = document.createElement('img');
+            img.src = dataUrl;
+            img.alt = 'Preview';
+            img.className = 'bg-preview-img';
+            img.setAttribute('data-fullsrc', ev.target.result); // Spara originalet
+            bgPreview.appendChild(img);
+            // Ingen click/hover event här, vi använder event delegation nedan
+          };
+          imgEl.src = ev.target.result;
         };
         reader.readAsDataURL(file);
       });
+    }
+  });
+}
+
+// Event delegation för hover och click på preview-bilder
+if (bgPreview) {
+  // Hover: lägg till/tar bort en klass för att trigga CSS :hover även på mobila enheter om så önskas
+  bgPreview.addEventListener('mouseover', function(e) {
+    if (e.target.classList.contains('bg-preview-img')) {
+      e.target.classList.add('hover');
+    }
+  });
+  bgPreview.addEventListener('mouseout', function(e) {
+    if (e.target.classList.contains('bg-preview-img')) {
+      e.target.classList.remove('hover');
+    }
+  });
+  // Click: markera vald bild och byt bakgrund
+  bgPreview.addEventListener('click', function(e) {
+    if (e.target.classList.contains('bg-preview-img')) {
+      Array.from(bgPreview.querySelectorAll('.bg-preview-img')).forEach(el => el.classList.remove('selected'));
+      e.target.classList.add('selected');
+      const fullSrc = e.target.getAttribute('data-fullsrc') || e.target.src;
+      const fade = document.getElementById('bg-fade-overlay');
+      if (fade) {
+        fade.classList.add('active');
+        setTimeout(() => {
+          document.body.style.transition = 'background-image 0.5s cubic-bezier(.4,0,.2,1)';
+          document.body.style.backgroundImage = `url('${fullSrc}')`;
+          document.body.style.backgroundSize = 'cover';
+          document.body.style.backgroundPosition = 'center';
+          document.body.style.backgroundRepeat = 'no-repeat';
+          setTimeout(() => {
+            document.body.style.transition = '';
+            fade.classList.remove('active');
+          }, 500);
+        }, 10);
+      } else {
+        document.body.style.backgroundImage = `url('${fullSrc}')`;
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundRepeat = 'no-repeat';
+      }
     }
   });
 }

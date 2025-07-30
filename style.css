@@ -1,3 +1,16 @@
+/* Wrapper to keep preview grid inside gray container */
+/* Wrapper to keep preview grid inside gray container and prevent overflow */
+.bg-preview-wrapper {
+  width: 100%;
+  max-width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  box-sizing: border-box;
+}
 /* Fade overlay for background transition */
 #bg-fade-overlay {
   position: fixed;
@@ -14,35 +27,63 @@
 #bg-fade-overlay.active {
   opacity: 0.0;
 }
+/* Preview grid container: responsive, never scrolls horizontally, always grid */
+/* Preview grid container: responsive, always grid, fixed cell size */
+/* Preview grid container: responsive, always grid, fixed cell size, center content */
+/* Preview grid container: fixed cell size, always side by side, never stacked */
+/* Preview grid container: fixed cell size, always side by side, never stacked, never overflow */
 #bg-preview {
   margin-top: 16px;
-}
-/* Responsive grid: max 3 images per row, wrap after 3 */
-#bg-preview {
-  margin-top: 16px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  min-height: 40px;
+  box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, 120px);
+  grid-auto-rows: 80px;
+  grid-auto-flow: row;
   gap: 16px;
 }
+/* Responsive preview images: never too large */
+/* Responsive preview images: always contained */
+/* Responsive preview images: always contained, never overflow */
+/* Preview images: always small, never fill container */
+/* Preview images: always fit inside grid cell, never stretch, always show whole image */
+/* Preview images: always fit inside grid cell, never stretch, always show whole image, centered */
+/* Preview images: always fit inside grid cell, never stretch, always show whole image, centered */
+/* Preview images: always fit inside grid cell, never overflow, always show whole image, centered */
+/* Preview images: always fit inside grid cell, never overflow, always show whole image, centered */
+/* Preview images: always fit inside grid cell, never overflow, always show whole image, centered */
+/* Preview images: always exactly grid cell size, never overflow, always centered */
+/* Preview images: always fill grid cell, never overflow, always show whole image, centered */
+/* Preview images: alltid exakt 180x120px, centrerad, alltid lika stor */
 .bg-preview-img {
-  width: 100%;
+  width: 180px;
+  height: 120px;
   aspect-ratio: 3/2;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 16px;
   box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
   display: block;
   transition: width 0.2s, height 0.2s, border 0.18s, box-shadow 0.18s;
   border: 2.5px solid transparent;
+  margin: auto;
 }
 /* Blue border on hover */
-.bg-preview-img:hover {
-  border: 2.5px solid #0078ff;
-  box-shadow: 0 4px 16px 0 rgba(0,120,255,0.18);
+/* Blue border on hover */
+/* Blue border on hover, always visible */
+/* Hover effect for both :hover and .hover class (for event delegation compatibility) */
+.bg-preview-img:hover,
+.bg-preview-img.hover {
+  border: 2.5px solid #0078ff !important;
+  box-shadow: 0 4px 16px 0 rgba(0,120,255,0.18) !important;
+  cursor: pointer;
 }
-/* Blue border when selected */
+/* Blue border when selected (remains until another is selected), always visible */
 .bg-preview-img.selected {
-  border: 2.5px solid #0078ff;
-  box-shadow: 0 4px 16px 0 rgba(0,120,255,0.22);
+  border: 2.5px solid #0078ff !important;
+  box-shadow: 0 4px 16px 0 rgba(0,120,255,0.22) !important;
 }
 /* Make upload and remove buttons same width */
 /* Make upload and remove buttons same width and height */
@@ -88,9 +129,7 @@
   color: #fff;
   box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
 }
-#bg-preview {
-  margin-top: 16px;
-}
+
 body {
   margin: 0;
   padding: 0;
