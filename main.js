@@ -1,6 +1,40 @@
+// Background upload button logic
+const bgUploadBtn = document.getElementById('bg-upload-btn');
+const bgUploadInput = document.getElementById('bg-upload-input');
+const bgPreview = document.getElementById('bg-preview');
+
+if (bgUploadBtn && bgUploadInput && bgPreview) {
+  bgUploadBtn.addEventListener('click', () => {
+    bgUploadInput.click();
+  });
+  bgUploadInput.addEventListener('change', (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        bgPreview.innerHTML = `<img src="${ev.target.result}" alt="Preview" style="max-width:100%;max-height:120px;border-radius:12px;box-shadow:0 2px 8px 0 rgba(0,0,0,0.10);margin-top:8px;" />`;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+}
 // Settings drawer open/close with slide animation and click-outside to close
 const openBtn = document.getElementById('open-settings');
 const drawer = document.getElementById('settings-drawer');
+const images = [
+  'background_images/wallpapper03.png',
+  'background_images/wallpapper_02.png',
+  'background_images/wallpapper_01.jpg'
+];
+function setRandomBackground() {
+  const randomImage = images[Math.floor(Math.random() * images.length)];
+  document.body.style.backgroundImage = `url('${randomImage}')`;
+  document.body.style.backgroundSize = 'cover';
+  document.body.style.backgroundPosition = 'center';
+  document.body.style.backgroundRepeat = 'no-repeat';
+}
+// Set random background on page load
+setRandomBackground();
 if (openBtn && drawer) {
   openBtn.addEventListener('click', function(e) {
     e.preventDefault();
