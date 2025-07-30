@@ -1,0 +1,51 @@
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DockTab Start Page</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <form class="search-bar" action="https://www.google.com/search" method="GET" target="_blank" autocomplete="off">
+      <input type="text" name="q" placeholder="Search or type URL..." autofocus>
+    </form>
+  </div>
+  <button type="button" class="settings-btn" title="Settings" id="open-settings">
+    <img src="https://www.iconpacks.net/icons/2/free-settings-icon-3110-thumb.png" alt="Settings" width="32" height="32" style="pointer-events:none;" />
+  <!-- Styles moved to style.css -->
+      box-shadow: 0 4px 16px 0 rgba(31,38,135,0.10);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: box-shadow 0.2s, background 0.2s;
+      z-index: 100;
+      padding: 0;
+    }
+    .settings-btn:hover {
+      background: rgba(255,255,255,0.5);
+      box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
+    }
+    .settings-btn img {
+      width: 32px;
+      height: 32px;
+      pointer-events: none;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.08));
+    }
+    @media (max-width: 600px) {
+      .settings-btn {
+        right: 12px;
+        bottom: 12px;
+        width: 44px;
+        height: 44px;
+      }
+      .settings-btn img {
+        width: 24px;
+        height: 24px;
+      }
+    }
+</style>
+<script src="main.js"></script>
+</html>
