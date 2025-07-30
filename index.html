@@ -1,3 +1,12 @@
+    <!-- Shortcut context menu -->
+    <div id="shortcut-context-menu" class="shortcut-context-menu">
+      <div class="shortcut-context-sheet">
+        <button class="shortcut-context-item" id="shortcut-rename">Byt namn</button>
+        <button class="shortcut-context-item" id="shortcut-change-icon">Byt ikon</button>
+        <button class="shortcut-context-item remove" id="shortcut-remove">Ta bort</button>
+        <button class="shortcut-context-cancel" id="shortcut-context-cancel">Avbryt</button>
+      </div>
+    </div>
   <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,6 +33,21 @@
         <button class="plus-menu-item" id="plus-shortcut">Skapa genväg</button>
         <button class="plus-menu-item" id="plus-group">Skapa grupp</button>
         <button class="plus-menu-cancel" id="plus-cancel">Avbryt</button>
+      </div>
+    </div>
+    <!-- Shortcut iOS menu -->
+    <div id="shortcut-menu" class="plus-menu" style="z-index:100000;">
+      <div class="plus-menu-bg"></div>
+      <div class="plus-menu-sheet">
+        <div style="padding:28px 24px 10px 24px;display:flex;flex-direction:column;gap:18px;">
+          <div style="font-size:1.18rem;font-weight:600;color:#fff;text-align:center;">Ny genväg</div>
+          <input id="shortcut-url" type="text" placeholder="URL till hemsida" style="padding:14px 14px;font-size:1.08rem;border-radius:12px;border:none;background:rgba(255,255,255,0.13);color:#222;outline:none;">
+          <input id="shortcut-img" type="text" placeholder="URL till bild (valfritt)" style="padding:14px 14px;font-size:1.08rem;border-radius:12px;border:none;background:rgba(255,255,255,0.13);color:#222;outline:none;">
+          <input id="shortcut-title" type="text" placeholder="Namn på genväg (valfritt)" style="padding:14px 14px;font-size:1.08rem;border-radius:12px;border:none;background:rgba(255,255,255,0.13);color:#222;outline:none;">
+        </div>
+        <button class="plus-menu-item" id="shortcut-save">Spara</button>
+        <button class="plus-menu-cancel" id="shortcut-cancel">Avbryt</button>
+      </div>
       </div>
     </div>
   </div>
