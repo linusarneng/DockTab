@@ -50,8 +50,13 @@
             Remove
           </button>
         </div>
+        <div class="bg-preview-wrapper" style="margin:14px 0 10px 0;"><div id="bg-preview"></div></div>
+        <div class="settings-row" style="margin:10px 0 0 0;display:flex;align-items:center;gap:12px;justify-content:center;">
+          <label for="bg-blur-slider" style="min-width:60px;color:#fff;font-weight:500;">Blur</label>
+          <input type="range" id="bg-blur-slider" min="0" max="30" value="8" step="1" style="flex:1;max-width:180px;">
+          <span id="bg-blur-value" style="min-width:24px;display:inline-block;text-align:right;color:#fff;font-weight:500;">8</span>
+        </div>
         <input type="file" id="bg-upload-input" accept="image/*" style="display:none;" />
-        <div class="bg-preview-wrapper"><div id="bg-preview"></div></div>
       </div>
     </div>
   </div>

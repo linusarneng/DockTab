@@ -1,3 +1,6 @@
+const bgBlurSlider = document.getElementById('bg-blur-slider');
+const bgBlurValue = document.getElementById('bg-blur-value');
+const bgFadeOverlay = document.getElementById('bg-fade-overlay');
 const bgRemoveBtn = document.getElementById('bg-remove-btn');
 // Background upload button logic
 const bgUploadBtn = document.getElementById('bg-upload-btn');
@@ -69,21 +72,13 @@ if (bgPreview) {
       if (fade) {
         fade.classList.add('active');
         setTimeout(() => {
-          document.body.style.transition = 'background-image 0.5s cubic-bezier(.4,0,.2,1)';
-          document.body.style.backgroundImage = `url('${fullSrc}')`;
-          document.body.style.backgroundSize = 'cover';
-          document.body.style.backgroundPosition = 'center';
-          document.body.style.backgroundRepeat = 'no-repeat';
+          setBackgroundWithBlur(fullSrc);
           setTimeout(() => {
-            document.body.style.transition = '';
             fade.classList.remove('active');
           }, 500);
         }, 10);
       } else {
-        document.body.style.backgroundImage = `url('${fullSrc}')`;
-        document.body.style.backgroundSize = 'cover';
-        document.body.style.backgroundPosition = 'center';
-        document.body.style.backgroundRepeat = 'no-repeat';
+        setBackgroundWithBlur(fullSrc);
       }
     }
   });
@@ -104,13 +99,28 @@ const images = [
 ];
 function setRandomBackground() {
   const randomImage = images[Math.floor(Math.random() * images.length)];
-  document.body.style.backgroundImage = `url('${randomImage}')`;
-  document.body.style.backgroundSize = 'cover';
-  document.body.style.backgroundPosition = 'center';
-  document.body.style.backgroundRepeat = 'no-repeat';
+  setBackgroundWithBlur(randomImage);
+}
+
+function setBackgroundWithBlur(src) {
+  if (!bgFadeOverlay) return;
+  bgFadeOverlay.style.backgroundImage = `url('${src}')`;
+  bgFadeOverlay.style.backgroundSize = 'cover';
+  bgFadeOverlay.style.backgroundPosition = 'center';
+  bgFadeOverlay.style.backgroundRepeat = 'no-repeat';
+  const blur = bgBlurSlider ? bgBlurSlider.value : 8;
+  bgFadeOverlay.style.filter = `blur(${blur}px)`;
 }
 // Set random background on page load
 setRandomBackground();
+// Blur slider logic
+if (bgBlurSlider && bgBlurValue && bgFadeOverlay) {
+  bgBlurSlider.addEventListener('input', function() {
+    bgBlurValue.textContent = bgBlurSlider.value;
+    bgFadeOverlay.style.filter = `blur(${bgBlurSlider.value}px)`;
+  });
+  bgBlurValue.textContent = bgBlurSlider.value;
+}
 if (openBtn && drawer) {
   openBtn.addEventListener('click', function(e) {
     e.preventDefault();

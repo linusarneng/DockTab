@@ -20,9 +20,13 @@
   height: 100vh;
   pointer-events: none;
   background: transparent;
-  opacity: 0;
-  z-index: 9999;
-  transition: opacity 0.5s cubic-bezier(.4,0,.2,1);
+  opacity: 1;
+  z-index: 0;
+  transition: opacity 0.5s cubic-bezier(.4,0,.2,1), filter 0.2s;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(8px);
 /* End of .ios-upload-btn block */
 #bg-fade-overlay.active {
   opacity: 0.0;
