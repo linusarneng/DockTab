@@ -1,3 +1,40 @@
+// Plus menu logic
+const plusBtn = document.querySelector('.glass-plus-btn');
+const plusMenu = document.getElementById('plus-menu');
+const plusMenuBg = plusMenu ? plusMenu.querySelector('.plus-menu-bg') : null;
+const plusCancel = document.getElementById('plus-cancel');
+if (plusBtn && plusMenu) {
+  plusBtn.addEventListener('click', () => {
+    const sheet = plusMenu.querySelector('.plus-menu-sheet');
+    if (sheet) sheet.classList.remove('closing');
+    plusMenu.classList.add('active');
+  });
+}
+if (plusMenuBg) {
+  plusMenuBg.addEventListener('click', () => {
+    closePlusMenuWithAnim();
+  });
+}
+if (plusCancel) {
+  plusCancel.addEventListener('click', () => {
+    closePlusMenuWithAnim();
+  });
+}
+
+function closePlusMenuWithAnim() {
+  const sheet = plusMenu.querySelector('.plus-menu-sheet');
+  if (sheet) {
+    sheet.classList.add('closing');
+    setTimeout(() => {
+      plusMenu.classList.remove('active');
+      sheet.classList.remove('closing');
+    }, 180); // matchar CSS duration
+  } else {
+    plusMenu.classList.remove('active');
+  }
+}
+const bgBrightnessSlider = document.getElementById('bg-brightness-slider');
+const bgBrightnessValue = document.getElementById('bg-brightness-value');
 const bgBlurSlider = document.getElementById('bg-blur-slider');
 const bgBlurValue = document.getElementById('bg-blur-value');
 const bgFadeOverlay = document.getElementById('bg-fade-overlay');
@@ -109,18 +146,47 @@ function setBackgroundWithBlur(src) {
   bgFadeOverlay.style.backgroundPosition = 'center';
   bgFadeOverlay.style.backgroundRepeat = 'no-repeat';
   const blur = bgBlurSlider ? bgBlurSlider.value : 8;
-  bgFadeOverlay.style.filter = `blur(${blur}px)`;
+  const brightness = bgBrightnessSlider ? bgBrightnessSlider.value : 100;
+  bgFadeOverlay.style.filter = `blur(${blur}px) brightness(${brightness/100})`;
+  // Spara till localStorage
+  localStorage.setItem('docktab_bg', src);
+  localStorage.setItem('docktab_blur', blur);
+  localStorage.setItem('docktab_brightness', brightness);
 }
-// Set random background on page load
-setRandomBackground();
-// Blur slider logic
+// Ladda från localStorage om det finns, annars random
+const savedBg = localStorage.getItem('docktab_bg');
+const savedBlur = localStorage.getItem('docktab_blur');
+const savedBrightness = localStorage.getItem('docktab_brightness');
+if (savedBg) {
+  if (bgBlurSlider && savedBlur) bgBlurSlider.value = savedBlur;
+  if (bgBrightnessSlider && savedBrightness) bgBrightnessSlider.value = savedBrightness;
+  setBackgroundWithBlur(savedBg);
+  updateBgOverlayFilter();
+} else {
+  setRandomBackground();
+}
+// Blur & brightness slider logic
+function updateBgOverlayFilter() {
+  const blur = bgBlurSlider ? bgBlurSlider.value : 8;
+  const brightness = bgBrightnessSlider ? bgBrightnessSlider.value : 100;
+  if (bgBlurValue) bgBlurValue.textContent = blur;
+  if (bgBrightnessValue) bgBrightnessValue.textContent = brightness;
+  if (bgFadeOverlay) bgFadeOverlay.style.filter = `blur(${blur}px) brightness(${brightness/100})`;
+  // Spara blur och brightness till localStorage (bilden sparas i setBackgroundWithBlur)
+  localStorage.setItem('docktab_blur', blur);
+  localStorage.setItem('docktab_brightness', brightness);
+}
+
 if (bgBlurSlider && bgBlurValue && bgFadeOverlay) {
-  bgBlurSlider.addEventListener('input', function() {
-    bgBlurValue.textContent = bgBlurSlider.value;
-    bgFadeOverlay.style.filter = `blur(${bgBlurSlider.value}px)`;
-  });
+  bgBlurSlider.addEventListener('input', updateBgOverlayFilter);
   bgBlurValue.textContent = bgBlurSlider.value;
 }
+if (bgBrightnessSlider && bgBrightnessValue && bgFadeOverlay) {
+  bgBrightnessSlider.addEventListener('input', updateBgOverlayFilter);
+  bgBrightnessValue.textContent = bgBrightnessSlider.value;
+}
+// Init filter
+updateBgOverlayFilter();
 if (openBtn && drawer) {
   openBtn.addEventListener('click', function(e) {
     e.preventDefault();

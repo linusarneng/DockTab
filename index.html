@@ -12,6 +12,20 @@
     <form class="search-bar" action="https://www.google.com/search" method="GET" target="_blank" autocomplete="off">
       <input type="text" name="q" placeholder="Search or type URL..." autofocus>
     </form>
+    <button class="glass-plus-btn" type="button" title="Add">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="0" width="32" height="32" rx="10" fill="none" />
+        <path d="M16 8v16M8 16h16" stroke="#222" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <div id="plus-menu" class="plus-menu">
+      <div class="plus-menu-bg"></div>
+      <div class="plus-menu-sheet">
+        <button class="plus-menu-item" id="plus-shortcut">Skapa genväg</button>
+        <button class="plus-menu-item" id="plus-group">Skapa grupp</button>
+        <button class="plus-menu-cancel" id="plus-cancel">Avbryt</button>
+      </div>
+    </div>
   </div>
   <button type="button" class="settings-btn" title="Settings" id="open-settings">
     <img src="https://www.iconpacks.net/icons/2/free-settings-icon-3110-thumb.png" alt="Settings" width="32" height="32" style="pointer-events:none;" />
@@ -55,6 +69,11 @@
           <label for="bg-blur-slider" style="min-width:60px;color:#fff;font-weight:500;">Blur</label>
           <input type="range" id="bg-blur-slider" min="0" max="30" value="8" step="1" style="flex:1;max-width:180px;">
           <span id="bg-blur-value" style="min-width:24px;display:inline-block;text-align:right;color:#fff;font-weight:500;">8</span>
+        </div>
+        <div class="settings-row" style="margin:10px 0 0 0;display:flex;align-items:center;gap:12px;justify-content:center;">
+          <label for="bg-brightness-slider" style="min-width:60px;color:#fff;font-weight:500;">Brightness</label>
+          <input type="range" id="bg-brightness-slider" min="40" max="160" value="100" step="1" style="flex:1;max-width:180px;">
+          <span id="bg-brightness-value" style="min-width:32px;display:inline-block;text-align:right;color:#fff;font-weight:500;">100</span>
         </div>
         <input type="file" id="bg-upload-input" accept="image/*" style="display:none;" />
       </div>
