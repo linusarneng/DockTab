@@ -1,10 +1,74 @@
+/* Fade overlay for background transition */
+#bg-fade-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  background: transparent;
+  opacity: 0;
+  z-index: 9999;
+  transition: opacity 0.5s cubic-bezier(.4,0,.2,1);
+/* End of .ios-upload-btn block */
+#bg-fade-overlay.active {
+  opacity: 0.0;
+}
+#bg-preview {
+  margin-top: 16px;
+}
+/* Responsive grid: max 3 images per row, wrap after 3 */
+#bg-preview {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.bg-preview-img {
+  width: 100%;
+  aspect-ratio: 3/2;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+  display: block;
+  transition: width 0.2s, height 0.2s, border 0.18s, box-shadow 0.18s;
+  border: 2.5px solid transparent;
+}
+/* Blue border on hover */
+.bg-preview-img:hover {
+  border: 2.5px solid #0078ff;
+  box-shadow: 0 4px 16px 0 rgba(0,120,255,0.18);
+}
+/* Blue border when selected */
+.bg-preview-img.selected {
+  border: 2.5px solid #0078ff;
+  box-shadow: 0 4px 16px 0 rgba(0,120,255,0.22);
+}
+/* Make upload and remove buttons same width */
+/* Make upload and remove buttons same width and height */
+.upload-btn-wide {
+  width: 160px;
+  min-width: 160px;
+  max-width: 160px;
+  justify-content: center;
+  height: 48px;
+  padding: 0;
+}
+}
+/* Red style for remove button */
+.remove-btn {
+  background: rgba(255,0,0,0.18) !important;
+  color: #fff !important;
+}
+/* iOS style upload button for settings */
 /* iOS style upload button for settings */
 .ios-upload-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 14px 28px;
+  height: 48px;
+  padding: 0 28px;
   border-radius: 16px;
   border: none;
   background: rgba(255,255,255,0.18);

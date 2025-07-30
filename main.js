@@ -1,3 +1,4 @@
+const bgRemoveBtn = document.getElementById('bg-remove-btn');
 // Background upload button logic
 const bgUploadBtn = document.getElementById('bg-upload-btn');
 const bgUploadInput = document.getElementById('bg-upload-input');
@@ -8,14 +9,53 @@ if (bgUploadBtn && bgUploadInput && bgPreview) {
     bgUploadInput.click();
   });
   bgUploadInput.addEventListener('change', (e) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = function(ev) {
-        bgPreview.innerHTML = `<img src="${ev.target.result}" alt="Preview" style="max-width:100%;max-height:120px;border-radius:12px;box-shadow:0 2px 8px 0 rgba(0,0,0,0.10);margin-top:8px;" />`;
-      };
-      reader.readAsDataURL(file);
+    if (e.target.files && e.target.files.length > 0) {
+      Array.from(e.target.files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+          const img = document.createElement('img');
+          img.src = ev.target.result;
+          img.alt = 'Preview';
+          img.className = 'bg-preview-img';
+          bgPreview.appendChild(img);
+          // Add click event to set as background and mark as selected
+          img.addEventListener('click', function() {
+            // Remove .selected from all images
+            Array.from(bgPreview.querySelectorAll('.bg-preview-img')).forEach(el => el.classList.remove('selected'));
+            // Add .selected to clicked image
+            img.classList.add('selected');
+            // Fade animation
+            const fade = document.getElementById('bg-fade-overlay');
+            if (fade) {
+              fade.classList.add('active');
+              setTimeout(() => {
+                document.body.style.transition = 'background-image 0.5s cubic-bezier(.4,0,.2,1)';
+                document.body.style.backgroundImage = `url('${img.src}')`;
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.backgroundPosition = 'center';
+                document.body.style.backgroundRepeat = 'no-repeat';
+                setTimeout(() => {
+                  document.body.style.transition = '';
+                  fade.classList.remove('active');
+                }, 500);
+              }, 10);
+            } else {
+              document.body.style.backgroundImage = `url('${img.src}')`;
+              document.body.style.backgroundSize = 'cover';
+              document.body.style.backgroundPosition = 'center';
+              document.body.style.backgroundRepeat = 'no-repeat';
+            }
+          });
+        };
+        reader.readAsDataURL(file);
+      });
     }
+  });
+}
+if (bgRemoveBtn && bgPreview) {
+  bgRemoveBtn.addEventListener('click', () => {
+    bgPreview.innerHTML = '';
+    bgUploadInput.value = '';
   });
 }
 // Settings drawer open/close with slide animation and click-outside to close
